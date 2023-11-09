@@ -1,4 +1,5 @@
 # NomNom
+
 ## Table of Contents
 
 1. [Overview](#Overview)
@@ -39,23 +40,6 @@ for nearby places to eat.
 * ...
 
 ### 2. Screen Archetypes
-
-Login Screen
-User can login
-Registration Screen
-
-User can create a new account
-Stream
-
-User can view a feed of photos
-User can double tap a photo to like
-Creation
-
-User can post a new photo to their feed
-Search
-
-User can search for other users
-User can follow/unfollow another user
 
 - [ ] [Splash Screen]
 * Short splash screen every time the app opens
