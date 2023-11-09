@@ -1,8 +1,4 @@
-Original App Design Project - README Template
-===
-
-# APP_NAME_HERE
-
+# NomNom
 ## Table of Contents
 
 1. [Overview](#Overview)
@@ -14,17 +10,18 @@ Original App Design Project - README Template
 
 ### Description
 
-[Description of your app]
+This is a food seaching app, that allows users to search
+for nearby places to eat.
 
 ### App Evaluation
 
 [Evaluation of your app across the following attributes]
-- **Category:**
-- **Mobile:**
-- **Story:**
-- **Market:**
-- **Habit:**
-- **Scope:**
+- **Category:** restaurant discovery app that enables users to explore nearby dining options while providing an interactive decision-making tool for those uncertain about their meal choices.
+- **Mobile:** Food & Dining
+- **Story:** Mobile is essential for on-the-go restaurant searches and decision-making. The app fetches from YELP API to display nearby dining options. Additionally, an interactive decision-making feature to help those indecisive users.
+- **Market:** Targeted towards individuals who enjoy dining out, foodies, and anyone looking for an interactive way to choose restaurants. The app can be utilized by anyone seeking dining options.
+- **Habit:** Users engage with the app whenever they're planning to dine out, seeking recommendations, or exploring new experiences. The decision-making feature encourages frequent use and exploration of diverse dining options.
+- **Scope:** Version 1 focuses on providing a visually appaerling way to show nearby restraurants, version 2 should focus on expanding on features like a decision making feature.
 
 ## Product Spec
 
@@ -32,39 +29,56 @@ Original App Design Project - README Template
 
 **Required Must-have Stories**
 
-* [fill in your required user stories here]
-* ...
+* User is able to search for nearby restaurants based on my location.
+* User can view more details about restaurants such as their menu, opening hours, location.
+* User is able to favorite restaurants
 
 **Optional Nice-to-have Stories**
 
-* [fill in your required user stories here]
+* A user is able to get a random restaurant picked for them
 * ...
 
 ### 2. Screen Archetypes
 
-- [ ] [list first screen here]
-* [list associated required story here]
-* ...
-list second screen here]
-* [list associated required story here]
-* ...
+Login Screen
+User can login
+Registration Screen
+
+User can create a new account
+Stream
+
+User can view a feed of photos
+User can double tap a photo to like
+Creation
+
+User can post a new photo to their feed
+Search
+
+User can search for other users
+User can follow/unfollow another user
+
+- [ ] [Splash Screen]
+* Short splash screen every time the app opens
+- [ ] [Stream]
+* User can see a stream of restaurant images with brief information in a feed format.
+* User can see tap on any restaurant to view more details about the restaurant and location.
+- [ ] [Search]
+* User can search for specific restaurants within the app.
+
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Home Screen
+* Favorite Screen
 
 **Flow Navigation** (Screen to Screen)
 
-- [ ] [list first screen here]
-* [list screen navigation here]
-* ...
-- [ ] [list second screen here]
-* [list screen navigation here]
-* ...
+- [ ] [Home Screen]
+* => Detail Screen
+- [ ] [Favorite Screen]
+* => None
 
 ## Wireframes
 
