@@ -26,18 +26,17 @@ for nearby places to eat.
 
 ## Product Spec
 
-### 1. User Stories (Required and Optional)
+### 1. User Features (Required and Optional)
 
-**Required Must-have Stories**
+**Required Must-have**
 
 * User is able to search for nearby restaurants based on my location.
 * User can view more details about restaurants such as their menu, opening hours, location.
 * User is able to favorite restaurants
 
-**Optional Nice-to-have Stories**
+**Optional Nice-to-have**
 
 * A user is able to get a random restaurant picked for them
-* ...
 
 ### 2. Screen Archetypes
 
