@@ -66,12 +66,7 @@ for nearby places to eat.
 
 ## Wireframes
 
-[Add picture of your hand sketched wireframes in this section]
-<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
-
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
+<img src="https://github.com/Jack-Camas/NomNom-App/assets/48427524/59dddff6-6943-4e39-8e39-c466e4aefa69" width=600>
 
 ## Schema 
 
