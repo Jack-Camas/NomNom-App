@@ -75,6 +75,13 @@ for nearby places to eat.
 
 [Add table of models]
 
+### Sprints
+- [x] Created a favorite tab
+- [x] User can see a stream of restaurant images with brief information in a feed format.
+- [x] A user can see tap on any restaurant to view more details about the restaurant and location.
+
+![Simulator Screen Recording - iPhone 15 Pro - 2023-11-17 at 22 54 13](https://github.com/Jack-Camas/NomNom-App/assets/48427524/d5647445-dec1-42d0-99a7-b5d4a021f051)
+
 ### Networking
 
 - [Add list of network requests by screen ]
