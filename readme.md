@@ -31,7 +31,7 @@ for nearby places to eat.
 **Required Must-have**
 
 * User is able to search for nearby restaurants based on my location.
-* User can view more details about restaurants such as their menu, opening hours, location.
+* User can view more details about restaurants such as their name, rating, location.
 * User is able to favorite restaurants
 
 **Optional Nice-to-have**
@@ -81,6 +81,14 @@ for nearby places to eat.
 - [x] A user can see tap on any restaurant to view more details about the restaurant and location.
 
 ![Simulator Screen Recording - iPhone 15 Pro - 2023-11-17 at 22 54 13](https://github.com/Jack-Camas/NomNom-App/assets/48427524/d5647445-dec1-42d0-99a7-b5d4a021f051)
+
+### Final Project Gif
+
+- [x] User is able to search for nearby restaurants based on my location.
+- [x] User is able to favorite restaurants
+- [x] Add a notification of the number in favorite items in the favorite tab
+
+![Simulator Screen Recording - iPhone 15 Pro - 2023-11-24 at 19 11 10](https://github.com/Jack-Camas/NomNom-App/assets/48427524/9e448b91-7085-4087-9390-47c0de9d8bb2)
 
 ### Networking
 
