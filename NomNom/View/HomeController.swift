@@ -8,9 +8,7 @@
 import UIKit
 import CoreLocation
 
-
 class HomeController: UICollectionViewController {
-    
     
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
@@ -31,16 +29,12 @@ class HomeController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.leftBarButtonItems = createLeftBarButtonItems()
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         
-        
-        //    }
-        collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.id)
         collectionView.register(SearchResultCell.self, forCellWithReuseIdentifier: SearchResultCell.id)
         collectionView.keyboardDismissMode = .interactive
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 111, right: 0)
@@ -48,7 +42,7 @@ class HomeController: UICollectionViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+		collectionView.reloadData()
     }
     
     
@@ -57,7 +51,7 @@ class HomeController: UICollectionViewController {
         let locationItem = UIBarButtonItem(image: UIImage(systemName: "location"), style: .plain, target: self, action: #selector(locationButtonTapped))
         let profileItem = UIBarButtonItem(image: UIImage(systemName: "person.circle"), style: .plain, target: self, action: #selector(profileButtonTapped))
         
-        return [searchItem, locationItem, profileItem]
+        return [searchItem, locationItem]
     }
     
     @objc private func deviceOrientationDidChange() {
@@ -73,6 +67,12 @@ class HomeController: UICollectionViewController {
     @objc private func profileButtonTapped() {
         // Handle profile button tap
     }
+    
+
+    func updateBadgeValue() {
+        NotificationCenter.default.post(name: Notification.Name("FavoritesUpdated"), object: nil)
+      }
+    
 }
 
 
@@ -137,12 +137,13 @@ extension HomeController: UISearchBarDelegate,UISearchResultsUpdating  {
         // You can clear the search text and reset the collection view to the original data source
     }
     
-    
-    
     func updateSearchResults(for searchController: UISearchController) {
         print("searc Pressed")
     }
     
+    
+    
+
 }
 //MARK: - UICollectionViewDataSource and UICollectionViewDelegate
 
@@ -153,8 +154,7 @@ extension HomeController {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
             
             // Header
-            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(110))
-            let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            
             
             // Item
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.5))
@@ -162,13 +162,13 @@ extension HomeController {
             
             // Group
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(500))
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
-            group.interItemSpacing = .fixed(10)
-            group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+           // group.interItemSpacing = .fixed(10)
+            //group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
             
             // Section
             let section = NSCollectionLayoutSection(group: group)
-            section.boundarySupplementaryItems = [headerItem]
+            
             section.interGroupSpacing = 10
             
             return section
@@ -188,20 +188,20 @@ extension HomeController {
         
         cell.delegate = self
         
-        
         cell.imageView.load(urlString: cardContainerOnDisplay[indexPath.row].urlImage)
         cell.nameLabel.text = cardContainerOnDisplay[indexPath.row].name
         cell.priceLabel.text = cardContainerOnDisplay[indexPath.row].price
         cell.rateLabel.text = String("Rate: \(cardContainerOnDisplay[indexPath.row].rating)")
         
-        if cardContainerOnDisplay[indexPath.row].favorite == true {
+		
+		let fav = BusinessCardModel.getFood(forKey: BusinessCardModel.favoritesKey)
+        if fav.contains(cardContainerOnDisplay[indexPath.row]) {
             cell.isHeartButtonSelected = true
-        }else {
+        } else {
             cell.isHeartButtonSelected = false
         }
         
         return cell
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -223,7 +223,6 @@ extension HomeController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (view.frame.width), height: (view.frame.height/2) - 210)
     }
-    
 }
 
 
@@ -242,16 +241,17 @@ extension HomeController: CLLocationManagerDelegate{
 				
 			case .success(let data):
 				DispatchQueue.main.async {
+                    
 					self.cardContainerOnDisplay.append(contentsOf: data)
 					self.cardContainer.append(contentsOf: data)
+                    
+                    
 					self.collectionView.reloadData()
 				}
 			case .failure(let error):
 				print(error)
 			}
 		}
-		
-		
         locationManager.stopUpdatingLocation()
     }
 }
@@ -259,9 +259,14 @@ extension HomeController: CLLocationManagerDelegate{
 extension HomeController: SearchResultCellDelegate {
     func togglHeartBtn(for cell: SearchResultCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        cardContainerOnDisplay[indexPath.row].favorite =
-        !cardContainerOnDisplay[indexPath.row].favorite
-        
+       
+		let fav = BusinessCardModel.getFood(forKey: BusinessCardModel.favoritesKey)
+		if fav.contains(cardContainerOnDisplay[indexPath.row]) {
+			cardContainerOnDisplay[indexPath.row].removeFromFavorites()
+		} else {
+			cardContainerOnDisplay[indexPath.row].addToFavorites()
+		}
+		updateBadgeValue()
         collectionView.reloadItems(at: [indexPath])
     }
 }

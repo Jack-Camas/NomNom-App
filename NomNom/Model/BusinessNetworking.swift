@@ -69,9 +69,13 @@ class BusinessManagment {
 			do {
 				let data = try JSONDecoder().decode(BusinessData.self, from: data)
 				//print(data)
-				let cardData = data.businesses.map { BusinessCardModel(business: $0)
+				let cardData = data.businesses.map { 
+                    
+                     
+                    BusinessCardModel(business: $0)
 				}
-				print(cardData)
+                
+                
 				completion(.success(cardData))
 			} catch {
 				completion(.failure(.dataError))

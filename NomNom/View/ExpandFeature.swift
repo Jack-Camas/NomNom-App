@@ -14,6 +14,13 @@ class ExpandFeatureController: UIViewController {
     var card:BusinessCardModel? = nil
     var quantity = 1
     var heart = "heart.fill"
+	
+	private var isHeartFilled = false {
+		didSet {
+			let imageName = isHeartFilled ? "heart.fill" : "heart"
+			heartButton.setImage(UIImage(systemName: imageName), for: .normal)
+		}
+	}
     
     
     override func viewDidLoad() {
@@ -21,6 +28,14 @@ class ExpandFeatureController: UIViewController {
         view.backgroundColor = UIColor.systemBackground
 
         setConstaints()
+		
+		let favorites = BusinessCardModel.getFood(forKey: BusinessCardModel.favoritesKey)
+		print(favorites)
+		if favorites.contains(card!) {
+			isHeartFilled = true
+		} else {
+			isHeartFilled = false
+		}
     }
     
   
@@ -77,36 +92,10 @@ class ExpandFeatureController: UIViewController {
         return label
     }()
     
-    private lazy var quantityLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.text = "Quantity "
-        return label
-    }()
-    
-    private lazy var quantityStepper: UIStepper = {
-        let stepper = UIStepper()
-        stepper.minimumValue = 1
-        stepper.maximumValue = 10
-        stepper.value = Double(quantity)
-        stepper.addTarget(self, action: #selector(quantityStepperDidChange), for: .valueChanged)
-        return stepper
-    }()
-    
-    private lazy var priceLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        label.text = "Price "
-        return label
-    }()
-    
-    private lazy var priceValueLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.text = "$\(quantity + 1).00"
-        return label
-    }()
-    
+
+  
+
+
     private lazy var navigateBtn: UIButton = {
         let button = UIButton()
         button.setTitle("Navigate", for: .normal)
@@ -177,22 +166,21 @@ class ExpandFeatureController: UIViewController {
             }
         }
     }
-
-
-
-
-
     
-    @objc func heartButtonTapped() {
+	@objc func heartButtonTapped(_ sender: UIButton) {
         isHeartFilled.toggle()
+		
+		if isHeartFilled == true {
+			card?.addToFavorites()
+		} else {
+			card?.removeFromFavorites()
+		}
+		updateBadgeValue()
     }
-    
-    private var isHeartFilled = false {
-        didSet {
-            let imageName = isHeartFilled ? "heart.fill" : "heart"
-            heartButton.setImage(UIImage(systemName: imageName), for: .normal)
-        }
-    }
+	
+	func updateBadgeValue() {
+		NotificationCenter.default.post(name: Notification.Name("FavoritesUpdated"), object: nil)
+	  }
     
 }
 
@@ -208,10 +196,8 @@ extension  ExpandFeatureController{
         scrollView.addSubview(heartButton)
         scrollView.addSubview(descriptionLabel)
         scrollView.addSubview(mealDescriptionLabel)
-        scrollView.addSubview(quantityLabel)
-        scrollView.addSubview(quantityStepper)
-        scrollView.addSubview(priceLabel)
-        scrollView.addSubview(priceValueLabel)
+      
+
         scrollView.addSubview(navigateBtn)
         
         // Add the scroll view to the main view
@@ -225,10 +211,6 @@ extension  ExpandFeatureController{
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         heartButton.translatesAutoresizingMaskIntoConstraints = false
         mealDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        quantityLabel.translatesAutoresizingMaskIntoConstraints = false
-        quantityStepper.translatesAutoresizingMaskIntoConstraints = false
-        priceLabel.translatesAutoresizingMaskIntoConstraints = false
-        priceValueLabel.translatesAutoresizingMaskIntoConstraints = false
         navigateBtn.translatesAutoresizingMaskIntoConstraints = false
         
         // Set up the constraints for the scroll view
@@ -277,38 +259,12 @@ extension  ExpandFeatureController{
             mealDescriptionLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             mealDescriptionLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
         ])
-        
-        // Set up the constraints for the quantity label
-        NSLayoutConstraint.activate([
-            quantityLabel.leadingAnchor.constraint(equalTo: mealTitleLabel.leadingAnchor),
-            quantityLabel.topAnchor.constraint(equalTo: mealDescriptionLabel.bottomAnchor, constant: 16),
-            quantityLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
-        ])
-        
-        // Set up the constraints for the quantity stepper
-        NSLayoutConstraint.activate([
-            quantityStepper.leadingAnchor.constraint(equalTo: quantityLabel.trailingAnchor, constant: 8),
-            quantityStepper.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor),
-        ])
-        
-        // Set up the constraints for the price label
-        NSLayoutConstraint.activate([
-            priceLabel.leadingAnchor.constraint(equalTo: quantityStepper.trailingAnchor, constant: 16),
-            priceLabel.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor),
-        ])
-        
-        // Set up the constraints for the price value label
-        NSLayoutConstraint.activate([
-            priceValueLabel.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 8), priceValueLabel.centerYAnchor.constraint(equalTo: quantityLabel.centerYAnchor),
-        ])
-        
-        
-        
-        NSLayoutConstraint.activate([
-            navigateBtn.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
-            navigateBtn.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            navigateBtn.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 32),
-            navigateBtn.topAnchor.constraint(equalTo: priceValueLabel.bottomAnchor, constant: 16),
-        ])
-    }
+	
+		NSLayoutConstraint.activate([
+			navigateBtn.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+			navigateBtn.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+			navigateBtn.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 32),
+			navigateBtn.topAnchor.constraint(equalTo: mealDescriptionLabel.bottomAnchor, constant: 16),
+		])
+	}
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BusinessCardModel: Decodable{
+struct BusinessCardModel: Codable,Equatable{
     var id:String
     var name:String
     var rating:Float
@@ -18,6 +18,9 @@ struct BusinessCardModel: Decodable{
     var urlImage: String
     var longitude:Double
     var latitude:Double
+    static var favoritesKey: String {
+        return "Favorites"
+    }
     
     var addessString: String {
          address.joined(separator: "\n")
@@ -36,3 +39,41 @@ struct BusinessCardModel: Decodable{
 		self.latitude = business.coordinates?.latitude ?? 0.0
 	}
 }
+
+
+extension BusinessCardModel {
+    static func save(_ movies: [BusinessCardModel], forKey key: String) {
+        let defaults = UserDefaults.standard
+        let encodedData = try! JSONEncoder().encode(movies)
+        defaults.set(encodedData, forKey: key)
+    }
+
+  
+    static func getFood(forKey key: String) -> [BusinessCardModel] { 
+        let defaults = UserDefaults.standard
+        if let data = defaults.data(forKey: key) {
+            let decodedMovies = try! JSONDecoder().decode([BusinessCardModel].self, from: data)
+            return decodedMovies
+        } else {
+            return []
+        }
+    }
+
+    func addToFavorites() {
+        
+        var favoriteFood = BusinessCardModel.getFood(forKey: BusinessCardModel.favoritesKey)
+        favoriteFood.append(self)
+        BusinessCardModel.save(favoriteFood, forKey: BusinessCardModel.favoritesKey)
+    }
+
+
+    func removeFromFavorites() {
+        var favoriteFood = BusinessCardModel.getFood(forKey: BusinessCardModel.favoritesKey)
+        favoriteFood.removeAll { food in
+            return self == food
+        }
+        
+        BusinessCardModel.save(favoriteFood, forKey: BusinessCardModel.favoritesKey)
+    }
+}
+

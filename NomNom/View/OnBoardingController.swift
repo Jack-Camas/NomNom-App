@@ -64,7 +64,7 @@ class OnBoardingController: UIViewController {
         btn.setTitleColor(.clear, for: .normal)
         btn.backgroundColor = .clear
         btn.setTitle("", for: .normal)
-        btn.addTarget(self, action: #selector(handleLocationButtonPressed), for: .touchUpInside)
+        btn.addTarget(OnBoardingController.self, action: #selector(handleLocationButtonPressed), for: .touchUpInside)
         
         return btn
     }()
@@ -76,7 +76,7 @@ class OnBoardingController: UIViewController {
         btn.setTitleColor(.clear, for: .normal)
         btn.backgroundColor = .clear
         btn.setTitle("Continue", for: .normal)
-        btn.addTarget(self, action: #selector(onContinueTapped), for: .touchUpInside)
+        btn.addTarget(OnBoardingController.self, action: #selector(onContinueTapped), for: .touchUpInside)
         return btn
     }()
     

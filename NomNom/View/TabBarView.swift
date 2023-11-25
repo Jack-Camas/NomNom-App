@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBarView: UITabBarController{
+class TabBarView: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,13 +16,18 @@ class TabBarView: UITabBarController{
     }
     
     private func loadTabViews() {
+        
+        let defaults = UserDefaults.standard
+        let cardIDArray = defaults.stringArray(forKey: "CardIDArray") ?? [String]()
+        
         let homeController = HomeController()
         let favController = FavController()
+        favController.loadViewIfNeeded()
         
         //let navController = UINavigationController(rootViewController: myCollectionVC)
         //self.present(navController, animated: true, completion: nil)
         
-       
+        
         
         homeController.tabBarItem.image = UIImage(systemName: "person")
         let navController = UINavigationController(rootViewController: homeController)
@@ -30,13 +35,12 @@ class TabBarView: UITabBarController{
         
         favController.title = "Favorite"
         favController.tabBarItem.image = UIImage(systemName: "star")
-        favController.tabBarItem.badgeValue = "1"
         let navControllerfav = UINavigationController(rootViewController: favController)
         
         
         
         self.setViewControllers([navController, navControllerfav], animated: false)
-        self.tabBar.backgroundColor = .blue
+        self.tabBar.backgroundColor = .white
     }
 }
 
